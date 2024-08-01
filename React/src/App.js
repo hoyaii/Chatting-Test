@@ -1,5 +1,5 @@
-// src/App.js
 import React, { useEffect, useState } from 'react';
+import './styles.css';  // 스타일시트 추가
 import { connectStomp, disconnectStomp } from './services/RabbitMQService';
 import { getChatRooms, getMessages, sendMessage } from './services/ChatService';
 
@@ -49,7 +49,6 @@ function App() {
           try {
               await sendMessage(selectedRoomId, newMessage);
               setNewMessage('');
-              fetchMessages(selectedRoomId);
           } catch (error) {
               console.error('Failed to send message:', error);
           }
@@ -58,30 +57,34 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Chat Rooms</h1>
-      <ul>
-        {chatRooms.map((room) => (
-          <li key={room.chatRoomId} onClick={() => handleRoomSelection(room.chatRoomId)}>
-            {room.name}
-          </li>
-        ))}
-      </ul>
+      <div className="sidebar">
+        <h1>Chat Rooms</h1>
+        <ul>
+          {chatRooms.map((room) => (
+            <li key={room.chatRoomId} className="chat-room" onClick={() => handleRoomSelection(room.chatRoomId)}>
+              {room.name}
+            </li>
+          ))}
+        </ul>
+      </div>
       {selectedRoomId && (
-        <div>
-          <h2>Messages</h2>
-          <ul>
+        <div className="chat-container">
+          <div className="chat-messages">
             {messages.map((msg, index) => (
-              <li key={index}>
-                {msg.senderName}: {msg.content}
-              </li>
+              <div key={index} className={`message ${msg.nickName === "호얘이4" ? 'sent' : 'received'}`}>
+                <strong>{msg.nickName}</strong>: {msg.content}
+              </div>
             ))}
-          </ul>
-          <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-          />
-          <button onClick={handleSendMessage}>Send</button>
+          </div>
+          <div className="message-input-container">
+            <input
+              type="text"
+              className="message-input"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+            />
+            <button className="send-button" onClick={handleSendMessage}>Send</button>
+          </div>
         </div>
       )}
     </div>

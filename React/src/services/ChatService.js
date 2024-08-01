@@ -1,16 +1,17 @@
 // src/services/ChatService.js
 import axios from 'axios';
 
-const API_BASE_URL = 'http://54.180.244.93:8080/api';
 
-const accessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5ZzA0MDc2NEBuYXZlci5jb20iLCJyb2xlIjowLCJuaWNrTmFtZSI6Iu2YuOyWmOydtDQiLCJpZCI6MywiZXhwIjoxNzIyMzQ2OTM4fQ._ZTBCBJqbRgV73issF5VMve4fZKy1G7TJJ1CGjLb-_R8e3qsVPPi3nnw2t_X4e0qBvgPcP8DfX6klK3x7D257Q';
+const accessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5ZzA0MDc2NEBuYXZlci5jb20iLCJyb2xlIjowLCJuaWNrTmFtZSI6Iu2YuOyWmOydtDQiLCJpZCI6MywiZXhwIjoxNzIyNTkzMTUzfQ.5NSvRGPsKXc3qjU0yD2rov-D3iD5a3z4Grpyx8klnR1DAe4-hNxy2ga56MgdQYDsR7srnNMxc0XmPPMbghIxMg';
 axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
 export const sendMessage = async (chatRoomId, content, images = []) => {
+    const sendDate = new Date().toISOString(); 
     const response = await axios.post(`${API_BASE_URL}/chat/send`, {
         chatRoomId,
         content,
-        images
+        images,
+        sendDate
     });
     return response.data;
 };
